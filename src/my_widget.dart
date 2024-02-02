@@ -7,14 +7,27 @@ class MyWidget extends StatefulWidget {
   _MyWidgetState createState() => _MyWidgetState();
 }
 
-class _MyWidgetState extends State<MyWidget> with SingleTickerProviderStateMixin {
+class _MyWidgetState extends State<MyWidget>
+    with SingleTickerProviderStateMixin {
+  //
+  //Animation and controller could be marked as final
+  //
   late AnimationController _controller;
   late Animation<double> _animation;
+
+  //
+  //DataModel should be obtained from state management solution. Using it in widget class decreases code maintainability.
+  //
   late Future<DataModel> _dataModel;
 
   @override
   void initState() {
     super.initState();
+
+    //
+    // ApiService().fetchData() returns Future, so this should be awaited. However, it is not possible here as initState() does not allow it. It should be done using state management solution.
+    // ApiService should not be created here. Better solution is to use dependency injection from global container.
+    //
     _dataModel = ApiService().fetchData();
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
